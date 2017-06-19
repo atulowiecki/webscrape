@@ -27,12 +27,9 @@ def proper_name(arg):
     return arg
 
 # download html page
-def downloadpage(url, filename):
+def download_page(url, filename):
     # Headers for faking user browsing
     headers = {'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0'}
-    if 'baronscustom.com' in url:
-        headers = {'Host':'www.baronscustom.com', 'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0', 'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8', 'Accept-Language':'en-US,en;q=0.5', 'Accept-Encoding':'gzip, deflate, br', 'DNT':'1', 'Connection':'keep-alive', 'Upgrade-Insecure-Requests':'1'}
-
     # Skip files already downloaded
     if os.path.isfile(filename):
         print('Skipped: ', filename)
@@ -57,7 +54,7 @@ def downloadpage(url, filename):
             print('Downloaded: ', filename)
 
 def create_directory(args):
-    if len(args) == 0:
+    if not args:
         return
     if isinstance(args, str):
         args = [args]
@@ -71,7 +68,7 @@ def create_directory(args):
         os.makedirs(directory)
     return directory
 
-def geturls(folder=None):
+def get_urls(folder=None):
     # Get urls from clipboard
     urls = set([o.strip().replace('\\', '/') for o in pyperclip.paste().splitlines() if o.strip() and ('/' in o or '\\' in o)])
     print(len(urls), 'urls in clipboard')
@@ -93,7 +90,7 @@ def geturls(folder=None):
         filename = proper_name(filename)
         if folder:
             filename = os.path.join(folder, filename)
-        downloadpage(url, filename)
+        download_page(url, filename)
 
 if __name__ == '__main__':
-    geturls(sys.argv[1:])
+    get_urls(sys.argv[1:])
